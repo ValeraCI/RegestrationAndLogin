@@ -22,9 +22,24 @@ public class User implements Serializable {
         }while (age < 4 || age > 105);
     }
 
+    public String getEmail() {
+        return email;
+    }
 
-    public boolean truePassword(String password){
-        return this.password == password;
+    public boolean login(){
+        Input in = new Input();
+        System.out.println(name + ", рады видеть вас вновь");
+        for(int i = 0; i < 3; i++){
+            System.out.println("Осталось " + (3-i) + " попыток\nВведите свой пароль:");
+            if(truePassword(in.strIn())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean truePassword(String password){
+        return this.password.equals(password);
     }
 
     @Override

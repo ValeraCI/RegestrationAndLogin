@@ -10,34 +10,29 @@ public class ObjectInputAndOutput {
         this.file = new File(fileName);
     }
 
-    public void output(Object obj){
-        if(obj instanceof User){
-            User user = (User) obj;
-            try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file, true))){
-                oos.writeObject(user);
+    public void output(List users){
+            try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
+                oos.writeObject(users);
                 System.out.println("Пользователь записан");
             }catch (IOException ioException){
                 System.out.println(ioException.getMessage());
             }
         }
-        else
-            System.out.println("Объект не является пользователем");
-    }
 
     public List input(){
-        List user = new ArrayList();
-        User add;
+        List users = new ArrayList();
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
-            while((add = (User) ois.readObject()) != null){
-                user.add(add);
-            }
+            users = (List) ois.readObject();
         }catch (IOException ioException){
-            System.out.println(ioException.getMessage());
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (ClassNotFoundException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
-
-        return user;
+        return users;
     }
 
 }
